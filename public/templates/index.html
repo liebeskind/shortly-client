@@ -4,17 +4,19 @@
   </div>
 </form>
 
-<ul class="CSSTableGenerator">
+<ul>
   <table class="linkTable">
     <tr>
       <th><a href="" ng-click="predicate='title'; reverse=!reverse">Title</a></th>
       <th><a href="" ng-click="predicate='url'; reverse=!reverse">URL</a></th>
       <th><a href="" ng-click="predicate='updated_at'; reverse=!reverse">Last Click</a></th>
+      <th>Stats</th>
       <th><a href="" ng-click="predicate='visits'; reverse=!reverse">Visits</a></th>
     </tr>
     <tr ng-repeat="item in links | orderBy:predicate:reverse | filter:searchText">
       <td class="linkName">{{item.title}}</td>
       <td><a href = "{{'http://localhost:4567/'+item.code}}">{{'http://localhost:4567/' +item.code}}</a></td>
+      <td><a href='' ng-click='stats(item)'>stats</a><stats>
       <td>{{item.updated_at}}</td>
       <td>{{item.visits}}</td>
     </tr>

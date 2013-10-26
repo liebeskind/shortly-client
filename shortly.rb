@@ -66,6 +66,15 @@ get '/links' do
     }.to_json
 end
 
+post '/clicks' do
+    data = JSON.parse request.body.read
+    link = Link.find_by_code(data['code'])
+    link.clicks.map { |click|
+        click['created_at'].as_json
+    }.to_json
+end
+
+
 post '/links' do
     data = JSON.parse request.body.read
     uri = URI(data['url'])
@@ -79,6 +88,7 @@ get '/:url' do
     link = Link.find_by_code params[:url]
     raise Sinatra::NotFound if link.nil?
     link.clicks.create!
+    link.touch
     redirect link.url
 end
 
