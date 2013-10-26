@@ -1,4 +1,10 @@
-<ul>
+<form>
+  <div>
+    Search: <input ng-model = "searchText">
+  </div>
+</form>
+
+<ul class="CSSTableGenerator">
   <table class="linkTable">
     <tr>
       <th><a href="" ng-click="predicate='title'; reverse=!reverse">Title</a></th>
@@ -6,9 +12,9 @@
       <th><a href="" ng-click="predicate='updated_at'; reverse=!reverse">Last Click</a></th>
       <th><a href="" ng-click="predicate='visits'; reverse=!reverse">Visits</a></th>
     </tr>
-    <tr ng-repeat="item in links | orderBy:predicate:reverse">
-      <td>{{item.title}}</td>
-      <td>{{item.url}}</td>
+    <tr ng-repeat="item in links | orderBy:predicate:reverse | filter:searchText">
+      <td class="linkName">{{item.title}}</td>
+      <td><a href = "{{'http://localhost:4567/'+item.code}}">{{'http://localhost:4567/' +item.code}}</a></td>
       <td>{{item.updated_at}}</td>
       <td>{{item.visits}}</td>
     </tr>
