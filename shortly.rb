@@ -74,7 +74,6 @@ post '/clicks' do
     }.to_json
 end
 
-
 post '/links' do
     data = JSON.parse request.body.read
     uri = URI(data['url'])

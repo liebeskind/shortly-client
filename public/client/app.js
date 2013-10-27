@@ -1,3 +1,14 @@
+
+d3.custom = {};
+
+d3.custom.barChart = function module() {
+
+  //this is where we make D3 stuff
+
+
+
+};
+///////////////////////////////////////////////////////BEGIN OUR CODE
 angular.module('shortly', [])
   .config(function($routeProvider) {
     $routeProvider
@@ -38,23 +49,60 @@ angular.module('shortly', [])
           $scope.shortLink.fullString = 'Heres your shitty link: http://localhost:4567/'+ data.code;
         });
       };
-    }
-  );
+    } /////////////////// /////////////////////////////////////////////BEGIN D3 STUFF
+  ).directive('d3gfx', function($http){
+    return{
+      restrict: 'A',
+      scope: true,
+      // template: '<div>yodawg this is a template</div>',
+      link: function(scope, iElement, iAttrs){
+        // $http.get('/links')
+          // .success(function(data){
+            // console.log(data);
+            // 
+            var diameter = 960,
+                format = d3.format(",d"),
+                color = d3.scale.category20c();
 
-angular.module('shortly.directives')
-  .directive('d3Bars', ['d3Service', function(d3Service){
-    return {
-      restrict: 'EA',
-      scope: {},
-      link: function(scope, element, attrs){
-        d3Service.d3().then(function(d3){
-          //d3 code
-        })
+            var bubble = d3.layout.pack()
+                .sort(null)
+                .size([diameter, diameter])
+                .padding(1.5);
+            var svg = d3.select(".d3container").append("svg")
+                .attr("width", diameter)
+                .attr("height", diameter)
+                .attr("class", "bubble");
+
+            d3.json("/links", function(error, root) {
+              console.log(bubble.nodes(root))
+              root = {children:root};
+              var node = svg.selectAll(".node")
+                  .data(bubble.nodes(root))
+                .enter().append("g")
+                  .attr("class", "node")
+                  .attr("transform", function(d) { return "translate(" + Math.random()*960 + "," + Math.random()*960 + ")"; });
+
+              node.append("title")
+                  .text(function(d) { return 'asdf' + ": " + format(123); });
+
+              node.append("circle")
+                  .attr("r", function(d) { return d.visits; })
+                  .style("fill", function(d) { return color('red'); });
+
+              node.append("text")
+                  .attr("dy", ".3em")
+                  .style("text-anchor", "middle")
+                  .text(function(d) { return d.title;});
+            });
+        // });
+        // d3.select(self.frameElement).style("height", diameter + "px");
+
+        //d3.rendersometstuff()
+        // console.log(iElement);
+        //iElement = svg
       }
-    }
-  }])
-
-
+    };
+  });
 
 
 
